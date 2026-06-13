@@ -9,17 +9,30 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+{
+    Schema::create('users', function (Blueprint $table) {
+        // Clave Primaria
+        $table->id('id_usuario');
+
+        // Clave Foránea (asumiendo que la tabla roles usa 'id' por defecto)
+        $table->foreignId('id_rol')->references('id')->on('roles');
+
+        // Datos Personales
+        $table->string('nombres');
+        $table->string('apellidos');
+        $table->string('correo_institucional')->unique();
+        $table->string('password');
+        $table->string('carrera');
+        $table->string('telefono');
+
+        // Estado del usuario con valor por defecto
+        $table->enum('estado_usuario', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
+
+        // created_at y updated_at
+        $table->timestamps();
+    });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

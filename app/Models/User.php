@@ -14,19 +14,30 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // 1. Le decimos a Laravel que tu clave primaria ahora se llama id_usuario
+    protected $primaryKey = 'id_usuario';
+
+    // 2. Agregamos todos tus campos al fillable para permitir el registro
+    protected $fillable = [
+        'id_rol',
+        'nombres',
+        'apellidos',
+        'correo_institucional',
+        'password',
+        'carrera',
+        'telefono',
+        'estado_usuario',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 }
