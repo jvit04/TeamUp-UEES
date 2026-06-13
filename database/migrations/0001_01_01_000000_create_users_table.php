@@ -9,30 +9,33 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-
     public function up(): void
-{
-    Schema::create('users', function (Blueprint $table) {
-        // Clave Primaria
-        $table->id('id_usuario');
+    {
+        Schema::create('users', function (Blueprint $table) {
+            // Clave primaria personalizada según el modelo relacional
+            $table->id('id_usuario');
 
-        // Clave Foránea (asumiendo que la tabla roles usa 'id' por defecto)
-        $table->foreignId('id_rol')->references('id')->on('roles');
+            // Clave foránea hacia roles.id_rol
+            $table->foreignId('id_rol')
+                ->constrained('roles', 'id_rol')
+                ->restrictOnDelete();
 
-        // Datos Personales
-        $table->string('nombres');
-        $table->string('apellidos');
-        $table->string('correo_institucional')->unique();
-        $table->string('password');
-        $table->string('carrera');
-        $table->string('telefono');
+            // Datos personales
+            $table->string('nombres');
+            $table->string('apellidos');
+            $table->string('correo_institucional')->unique();
+            $table->string('password');
+            $table->string('carrera');
+            $table->string('telefono');
 
-        // Estado del usuario con valor por defecto
-        $table->enum('estado_usuario', ['ACTIVO', 'INACTIVO'])->default('ACTIVO');
+            // Estado del usuario
+            $table->enum('estado_usuario', [
+                'ACTIVO',
+                'INACTIVO'
+            ])->default('ACTIVO');
 
-        // created_at y updated_at
-        $table->timestamps();
-    });
+            $table->timestamps();
+        });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
@@ -42,7 +45,10 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+
+            // Se deja como user_id porque Laravel lo usa internamente para sesiones.
+            $table->unsignedBigInteger('user_id')->nullable()->index();
+
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -55,8 +61,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
