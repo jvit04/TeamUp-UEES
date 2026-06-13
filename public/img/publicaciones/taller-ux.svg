@@ -1,0 +1,12 @@
+﻿<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#F8FAFC"/>
+  <rect width="1200" height="675" fill="#1F2937" opacity="0.96"/>
+  <circle cx="1020" cy="120" r="170" fill="#FFFFFF" opacity="0.08"/>
+  <circle cx="170" cy="560" r="210" fill="#FFFFFF" opacity="0.07"/>
+  <rect x="80" y="80" width="1040" height="515" rx="38" fill="#FFFFFF" opacity="0.10"/>
+  <text x="100" y="150" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="4">EVENTO ACADEMICO</text>
+  <text x="100" y="315" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="800">Taller UX</text>
+  <text x="100" y="405" fill="#F3F4F6" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="400">Diseno de interfaces y experiencia de usuario</text>
+  <rect x="100" y="485" width="250" height="58" rx="29" fill="#FFFFFF" opacity="0.18"/>
+  <text x="132" y="524" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">TeamUp UEES</text>
+</svg>
