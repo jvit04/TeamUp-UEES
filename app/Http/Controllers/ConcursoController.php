@@ -21,29 +21,23 @@ class ConcursoController extends Controller
         return view('concursos.index', compact('concursos'));
     }
 
-    // 2. Ver el detalle de un concurso específico
-   public function show($id)
+  public function show($id)
     {
         $concurso = \App\Models\Concurso::findOrFail($id);
         
         $grupos = \App\Models\GrupoConcurso::where('id_concurso', $id)
                                ->where('estado_grupo', 'ABIERTO')
+                               ->with(['lider', 'postulaciones'])
                                ->get();
 
-        // --- LÓGICA DE CASOS LÍMITE ---
         // Verificamos si el estudiante ya pertenece oficialmente a un grupo en este concurso
-        $usuarioTieneGrupo = false;
+        $usuarioTieneGrupo = \Illuminate\Support\Facades\DB::table('miembros_grupo')
+            ->join('grupos_concurso', 'miembros_grupo.id_grupo', '=', 'grupos_concurso.id_grupo')
+            ->where('grupos_concurso.id_concurso', $id)
+            ->where('miembros_grupo.id_usuario', auth()->user()->id_usuario)
+            ->where('miembros_grupo.estado_miembro', 'ACTIVO')
+            ->exists();
 
-        if (auth()->user()->id_rol != 1) {
-            $usuarioTieneGrupo = \Illuminate\Support\Facades\DB::table('miembros_grupo')
-                ->join('grupos_concurso', 'miembros_grupo.id_grupo', '=', 'grupos_concurso.id_grupo')
-                ->where('grupos_concurso.id_concurso', $id)
-                ->where('miembros_grupo.id_usuario', auth()->user()->id_usuario)
-                ->where('miembros_grupo.estado_miembro', 'ACTIVO')
-                ->exists();
-        }
-
-        // Enviamos la variable a la vista
         return view('concursos.show', compact('concurso', 'grupos', 'usuarioTieneGrupo'));
     }
 public function postularGrupo(Request $request, $id)

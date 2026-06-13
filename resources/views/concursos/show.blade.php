@@ -5,7 +5,7 @@
 @section('content')
 <div class="mb-4">
     <a href="{{ route('concursos.index') }}" class="text-black font-bold hover:underline">
-        Volver a concursos
+        &larr; Volver a concursos
     </a>
 </div>
 
@@ -22,12 +22,6 @@
             <li><strong>Lugar:</strong> {{ $concurso->lugar }}</li>
             <li><strong>Integrantes:</strong> {{ $concurso->minimo_integrantes }} a {{ $concurso->maximo_integrantes }}</li>
         </ul>
-
-        @if(auth()->user()->id_rol == 1)
-            <button class="w-full bg-gray-200 text-black font-bold py-2 px-4 rounded border border-gray-400">
-                Editar Concurso
-            </button>
-        @endif
     </div>
 
     <div class="md:col-span-2 bg-white border border-gray-300 rounded p-5 shadow-sm">
@@ -46,21 +40,21 @@
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-bold text-black">Grupos buscando miembros</h3>
             
-            @if(auth()->user()->id_rol != 1)
-                @if(!$usuarioTieneGrupo)
-                    <a href="{{ route('grupos.crear', $concurso->id_concurso) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-block text-center transition">
-                        + Crear mi grupo
-                    </a>
-                @else
-                    <span class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded text-sm border border-gray-300 shadow-sm">
-                        Ya tienes un equipo
-                    </span>
-                @endif
+            @if(!$usuarioTieneGrupo)
+                <a href="{{ route('grupos.crear', $concurso->id_concurso) }}" class="text-black font-bold hover:underline">
+                    + Crear mi grupo
+                </a>
+            @else
+                <span class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded text-sm border border-gray-300 shadow-sm">
+                    Ya tienes un equipo
+                </span>
             @endif
         </div>
 
         @if($grupos->isEmpty())
-            <p class="text-black">No hay grupos creados para este concurso.</p>
+            <div class="bg-gray-50 border border-dashed border-gray-300 rounded p-6 text-center">
+                <p class="text-gray-600">No hay grupos creados para este concurso.</p>
+            </div>
         @else
             @foreach($grupos as $grupo)
                 <div class="border border-gray-300 rounded p-4 mb-4 flex justify-between items-center hover:bg-gray-50 transition">
@@ -70,28 +64,26 @@
                         <p class="text-sm text-gray-600 mt-1">Líder: {{ $grupo->lider->nombres ?? 'Estudiante' }}</p>
                     </div>
                     
-                    @if(auth()->user()->id_rol != 1)
-                        @php
-                            $yaPostulo = $grupo->postulaciones->where('id_usuario', auth()->user()->id_usuario)->isNotEmpty();
-                        @endphp
+                    @php
+                        $yaPostulo = $grupo->postulaciones->where('id_usuario', auth()->user()->id_usuario)->isNotEmpty();
+                    @endphp
 
-                        @if(auth()->user()->id_usuario == $grupo->id_lider)
-                            <span class="bg-gray-200 text-gray-700 font-bold py-1 px-3 rounded text-sm border border-gray-300">
-                                Eres el líder
-                            </span>
-                        @elseif($usuarioTieneGrupo)
-                            @elseif($yaPostulo)
-                            <span class="bg-yellow-100 text-yellow-800 font-bold py-1 px-3 rounded text-sm border border-yellow-300">
-                                Solicitud Enviada
-                            </span>
-                        @else
-                            <form action="{{ route('grupos.postular', $grupo->id_grupo) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                                    Postularme
-                                </button>
-                            </form>
-                        @endif
+                    @if(auth()->user()->id_usuario == $grupo->id_lider)
+                        <span class="bg-gray-200 text-gray-700 font-bold py-1 px-3 rounded text-sm border border-gray-300">
+                            Eres el líder
+                        </span>
+                    @elseif($usuarioTieneGrupo)
+                        @elseif($yaPostulo)
+                        <span class="bg-yellow-100 text-yellow-800 font-bold py-1 px-3 rounded text-sm border border-yellow-300">
+                            Solicitud Enviada
+                        </span>
+                    @else
+                        <form action="{{ route('grupos.postular', $grupo->id_grupo) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                                Postularme
+                            </button>
+                        </form>
                     @endif
                 </div>
             @endforeach
