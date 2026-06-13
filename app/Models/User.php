@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     // 1. Le decimos a Laravel que tu clave primaria ahora se llama id_usuario
     protected $primaryKey = 'id_usuario';
