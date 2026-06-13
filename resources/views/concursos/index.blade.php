@@ -3,34 +3,30 @@
 @section('title', 'Concursos')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-black">Concursos y Competencias</h2>
-    
-    @if(auth()->user()->id_rol == 1)
-        <button class="bg-blue-600 text-white font-bold py-2 px-4 rounded">
-            Nuevo Concurso
-        </button>
-    @endif
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark m-0">Concursos y Competencias</h2>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="row g-4">
     @foreach($concursos as $concurso)
-        <div class="bg-white border border-gray-300 rounded p-5 shadow-sm">
-            <h3 class="text-lg font-bold text-black">{{ $concurso->nombre_concurso }}</h3>
-            <p class="text-sm text-gray-600 mb-3">{{ $concurso->area_concurso }}</p>
-            
-            <p class="text-black mb-4">
-                {{ $concurso->descripcion_concurso }}
-            </p>
-            
-            <div class="text-sm text-black mb-4">
-                <strong>Modalidad:</strong> {{ $concurso->modalidad }} <br>
-                <strong>Cierre:</strong> {{ \Carbon\Carbon::parse($concurso->fecha_limite_inscripcion)->format('d/m/Y') }}
-            </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100 border-light">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold text-dark">{{ $concurso->nombre_concurso }}</h5>
+                    <h6 class="card-subtitle mb-3 text-muted">{{ $concurso->area_concurso }}</h6>
+                    
+                    <p class="card-text text-dark flex-grow-1">{{ $concurso->descripcion_concurso }}</p>
+                    
+                    <div class="mb-4 text-dark small">
+                        <strong>Modalidad:</strong> {{ $concurso->modalidad }} <br>
+                        <strong>Cierre:</strong> {{ \Carbon\Carbon::parse($concurso->fecha_limite_inscripcion)->format('d/m/Y') }}
+                    </div>
 
-            <a href="{{ route('concursos.show', $concurso->id_concurso) }}" class="text-black font-bold hover:underline">
-                Ver detalles y grupos
-            </a>
+                    <a href="{{ route('concursos.show', $concurso->id_concurso) }}" class="text-decoration-none text-dark fw-bold mt-auto">
+                        Ver detalles y grupos &rarr;
+                    </a>
+                </div>
+            </div>
         </div>
     @endforeach
 </div>

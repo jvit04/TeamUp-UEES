@@ -1,37 +1,32 @@
 @extends('layouts.teamup')
 
-@section('title', 'Clubes')
+@section('title', 'Clubes Universitarios')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-black">Clubes Universitarios</h2>
-    
-    @if(auth()->user()->id_rol == 1)
-        <button class="bg-blue-600 text-white font-bold py-2 px-4 rounded">
-            Nuevo Club
-        </button>
-    @endif
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark m-0">Clubes Universitarios</h2>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="row g-4">
     @foreach($clubes as $club)
-        <div class="bg-white border border-gray-300 rounded p-5 shadow-sm">
-            <div class="flex justify-between items-start mb-2">
-                <h3 class="text-lg font-bold text-black">{{ $club->nombre_club }}</h3>
-                <span class="bg-gray-200 text-black font-bold px-2 py-1 rounded text-sm">
-                    Cupos: {{ $club->cupos_disponibles }}
-                </span>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100 border-light border-start border-4 border-primary">
+                <div class="card-body flex-column d-flex">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold text-dark m-0">{{ $club->nombre_club }}</h5>
+                        <span class="badge bg-secondary p-2 ms-2 text-nowrap">
+                            Cupos: {{ $club->cupos_disponibles }}
+                        </span>
+                    </div>
+                    
+                    <p class="small text-dark mb-3"><strong>Horario:</strong> {{ $club->horario }}</p>
+                    <p class="card-text text-dark flex-grow-1">{{ $club->descripcion_club }}</p>
+                    
+                    <a href="{{ route('clubes.show', $club->id_club) }}" class="text-decoration-none text-dark fw-bold mt-auto">
+                        Ver detalles y unirse &rarr;
+                    </a>
+                </div>
             </div>
-            
-            <p class="text-sm text-black mb-3"><strong>Horario:</strong> {{ $club->horario }}</p>
-            
-            <p class="text-black mb-4">
-                {{ $club->descripcion_club }}
-            </p>
-
-            <a href="{{ route('clubes.show', $club->id_club) }}" class="text-black font-bold hover:underline">
-                Ver detalles y unirse
-            </a>
         </div>
     @endforeach
 </div>

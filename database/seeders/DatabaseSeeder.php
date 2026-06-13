@@ -78,6 +78,72 @@ class DatabaseSeeder extends Seeder
             'updated_at' => $now,
         ]);
 
+        // --- NUEVOS USUARIOS ---
+        $mariaId = DB::table('users')->insertGetId([
+            'id_rol' => $estudianteRolId,
+            'nombres' => 'María',
+            'apellidos' => 'Gómez',
+            'correo_institucional' => 'mgomez@uees.edu.ec',
+            'password' => Hash::make('password123'),
+            'carrera' => 'Mecatrónica',
+            'telefono' => '0966666666',
+            'estado_usuario' => 'ACTIVO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        $carlosId = DB::table('users')->insertGetId([
+            'id_rol' => $estudianteRolId,
+            'nombres' => 'Carlos',
+            'apellidos' => 'Ruiz',
+            'correo_institucional' => 'cruiz@uees.edu.ec',
+            'password' => Hash::make('password123'),
+            'carrera' => 'Derecho',
+            'telefono' => '0955555555',
+            'estado_usuario' => 'ACTIVO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        $anaId = DB::table('users')->insertGetId([
+            'id_rol' => $estudianteRolId,
+            'nombres' => 'Ana',
+            'apellidos' => 'Torres',
+            'correo_institucional' => 'atorres@uees.edu.ec',
+            'password' => Hash::make('password123'),
+            'carrera' => 'Sistemas',
+            'telefono' => '0944444444',
+            'estado_usuario' => 'ACTIVO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        $luisId = DB::table('users')->insertGetId([
+            'id_rol' => $estudianteRolId,
+            'nombres' => 'Luis',
+            'apellidos' => 'Castro',
+            'correo_institucional' => 'lcastro@uees.edu.ec',
+            'password' => Hash::make('password123'),
+            'carrera' => 'Sistemas',
+            'telefono' => '0933333333',
+            'estado_usuario' => 'ACTIVO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        $pedroId = DB::table('users')->insertGetId([
+            'id_rol' => $estudianteRolId,
+            'nombres' => 'Pedro',
+            'apellidos' => 'Vera',
+            'correo_institucional' => 'pvera@uees.edu.ec',
+            'password' => Hash::make('password123'),
+            'carrera' => 'Sistemas',
+            'telefono' => '0922222222',
+            'estado_usuario' => 'ACTIVO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
         /*
         |--------------------------------------------------------------------------
         | Publicaciones compartidas para el inicio/dashboard
@@ -229,6 +295,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => $now,
         ]);
 
+        // Insertamos al líder (José)
         DB::table('miembros_grupo')->insert([
             'id_grupo' => $grupoId,
             'id_usuario' => $joseId,
@@ -237,6 +304,19 @@ class DatabaseSeeder extends Seeder
             'estado_miembro' => 'ACTIVO',
         ]);
 
+        // Llenamos el grupo con 4 integrantes adicionales
+        $nuevosMiembros = [$anaId, $luisId, $pedroId, $carlosId];
+        foreach ($nuevosMiembros as $miembro) {
+            DB::table('miembros_grupo')->insert([
+                'id_grupo' => $grupoId,
+                'id_usuario' => $miembro,
+                'rol_en_grupo' => 'INTEGRANTE',
+                'fecha_union' => Carbon::today()->toDateString(),
+                'estado_miembro' => 'ACTIVO',
+            ]);
+        }
+
+        // Postulación de Leonor (Sigue pendiente, ahora hacia un grupo lleno)
         DB::table('postulaciones_grupo')->insert([
             'id_grupo' => $grupoId,
             'id_usuario' => $leonorId,
@@ -255,13 +335,13 @@ class DatabaseSeeder extends Seeder
 
         $clubRoboticaId = DB::table('clubes')->insertGetId([
             'id_publicacion' => $pubClub1,
-            'id_responsable' => $adminId,
+            'id_responsable' => $mariaId, // <-- Responsable actualizada a María
             'nombre_club' => 'Club de Robótica e Inteligencia Artificial',
             'descripcion_club' => 'Club dedicado a la creación de prototipos, robots educativos, automatización e inteligencia artificial aplicada.',
             'cupos_disponibles' => 18,
             'horario' => 'Viernes de 15:00 a 17:00',
             'lugar' => 'Laboratorio de Computación 2',
-            'contacto' => 'roboticaia@uees.edu.ec',
+            'contacto' => 'mgomez@uees.edu.ec',
             'requisitos' => 'Interés en programación, electrónica o innovación tecnológica.',
             'estado_club' => 'DISPONIBLE',
             'created_at' => $now,
@@ -270,13 +350,13 @@ class DatabaseSeeder extends Seeder
 
         $clubDebateId = DB::table('clubes')->insertGetId([
             'id_publicacion' => $pubClub2,
-            'id_responsable' => $adminId,
+            'id_responsable' => $carlosId, // <-- Responsable actualizado a Carlos
             'nombre_club' => 'Club de Debate y Liderazgo',
             'descripcion_club' => 'Club orientado a fortalecer habilidades de comunicación, argumentación, liderazgo y participación estudiantil.',
             'cupos_disponibles' => 25,
             'horario' => 'Miércoles de 16:00 a 18:00',
             'lugar' => 'Aula Magna',
-            'contacto' => 'debate@uees.edu.ec',
+            'contacto' => 'cruiz@uees.edu.ec',
             'requisitos' => 'Compromiso de asistencia y disposición para participar en debates académicos.',
             'estado_club' => 'DISPONIBLE',
             'created_at' => $now,

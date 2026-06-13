@@ -123,11 +123,11 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     @include('partials.teamup-navbar')
 
-    <main class="container py-4">
+    <main class="container py-4 flex-grow-1">
         @yield('content')
     </main>
 

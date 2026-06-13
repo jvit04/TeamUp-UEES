@@ -3,73 +3,107 @@
 @section('title', $club->nombre_club)
 
 @section('content')
-<div class="mb-4">
-    <a href="{{ route('clubes.index') }}" class="text-black font-bold hover:underline">
-        Volver a clubes
+<div class="mb-3">
+    <a href="{{ route('clubes.index') }}" class="text-decoration-none text-dark fw-bold">
+        &larr; Volver a clubes
     </a>
 </div>
 
-<div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-black">{{ $club->nombre_club }}</h2>
-    <span class="bg-gray-200 text-black font-bold px-3 py-1 rounded border border-gray-300">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark m-0">{{ $club->nombre_club }}</h2>
+    <span class="badge bg-secondary p-2 fs-6">
         Cupos: {{ $club->cupos_disponibles }}
     </span>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm border-light h-100">
+            <div class="card-body">
+                <h4 class="card-title fw-bold mb-3">Acerca del Club</h4>
+                <p class="card-text">{{ $club->descripcion_club }}</p>
 
-    <div class="md:col-span-2 bg-white border border-gray-300 rounded p-5 shadow-sm">
-        <h3 class="text-lg font-bold text-black mb-2">Acerca del Club</h3>
-        <p class="text-black mb-6">{{ $club->descripcion_club }}</p>
-
-        <h3 class="text-lg font-bold text-black mb-2">Detalles Adicionales</h3>
-        <ul class="text-black space-y-2 mb-4">
-            <li><strong>Horario:</strong> {{ $club->horario }}</li>
-            <li><strong>Lugar:</strong> {{ $club->lugar }}</li>
-            <li><strong>Requisitos:</strong> {{ $club->requisitos }}</li>
-            <li><strong>Contacto:</strong> {{ $club->contacto }}</li>
-            <li><strong>Responsable:</strong> {{ $club->responsable->nombres ?? 'Administrador' }} {{ $club->responsable->apellidos ?? '' }}</li>
-        </ul>
+                <h5 class="fw-bold mt-4 mb-3">Detalles Adicionales</h5>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><strong>Horario:</strong> {{ $club->horario }}</li>
+                    <li class="mb-2"><strong>Lugar:</strong> {{ $club->lugar }}</li>
+                    <li class="mb-2"><strong>Requisitos:</strong> {{ $club->requisitos }}</li>
+                    <li class="mb-2"><strong>Contacto:</strong> {{ $club->contacto }}</li>
+                    <li><strong>Responsable:</strong> {{ $club->responsable->nombres ?? 'Administrador' }} {{ $club->responsable->apellidos ?? '' }}</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div class="md:col-span-1 bg-white border border-gray-300 rounded p-5 shadow-sm h-fit">
-        @if(auth()->user()->id_rol == 1)
-            <h3 class="text-lg font-bold text-black mb-2">Administración</h3>
-            <p class="text-sm text-black mb-4">Como administrador, puedes modificar los detalles de este club o gestionar sus integrantes.</p>
-            <button class="w-full bg-gray-200 text-black font-bold py-2 px-4 rounded border border-gray-400">
-                Editar Club
-            </button>
-        @else
-            <h3 class="text-lg font-bold text-black mb-2">Únete al Club</h3>
-            <p class="text-sm text-black mb-4">Llena el formulario para enviar tu solicitud de ingreso. El responsable la revisará pronto.</p>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-light">
+            <div class="card-body">
+                @if(session('success'))
+                    <div class="alert alert-success fw-bold" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger fw-bold" role="alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 font-bold">
-                    {{ session('success') }}
-                </div>
-            @endif
+                @php
+                    // Usamos auth()->id() como respaldo de seguridad adicional
+                    $esResponsable = (auth()->check() && (auth()->user()->id_usuario == $club->id_responsable || auth()->id() == $club->id_responsable));
+                @endphp
 
-            <form action="{{ route('clubes.postular', $club->id_club) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-black font-bold mb-1 text-sm">Motivo de postulación:</label>
-                    <textarea name="motivo_postulacion" rows="2" class="w-full border border-gray-300 rounded p-2 text-black text-sm" required></textarea>
-                </div>
-                <div>
-                    <label class="block text-black font-bold mb-1 text-sm">Experiencia previa (opcional):</label>
-                    <textarea name="experiencia_previa" rows="2" class="w-full border border-gray-300 rounded p-2 text-black text-sm"></textarea>
-                </div>
-                <div>
-                    <label class="block text-black font-bold mb-1 text-sm">Disponibilidad horaria:</label>
-                    <input type="text" name="disponibilidad_horaria" class="w-full border border-gray-300 rounded p-2 text-black text-sm" required>
-                </div>
+                @if($esResponsable)
+                    <div class="alert alert-secondary text-center fw-bold m-0" role="alert">
+                        Eres el responsable de este club.
+                    </div>
+                @elseif(isset($esMiembro) && $esMiembro)
+                    <h5 class="fw-bold mb-3 text-center">Tu Membresía</h5>
+                    <div class="alert alert-success text-center fw-bold mb-4" role="alert">
+                        ¡Eres miembro oficial!
+                    </div>
+                    <form action="{{ route('clubes.abandonar', $club->id_club) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas abandonar el club? Liberarás tu cupo y tendrás que volver a postularte si deseas regresar.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger fw-bold w-100">
+                            Abandonar Club
+                        </button>
+                    </form>
+                @elseif(isset($postulacionPendiente) && $postulacionPendiente)
+                    <div class="alert alert-warning text-center fw-bold text-dark m-0" role="alert">
+                        Tu solicitud ha sido enviada y está en revisión.
+                    </div>
+                @elseif($club->cupos_disponibles <= 0)
+                    <div class="alert alert-danger text-center fw-bold m-0" role="alert">
+                        Este club ya no tiene cupos disponibles.
+                    </div>
+                @else
+                    <h5 class="fw-bold mb-2">Únete al Club</h5>
+                    <p class="text-muted small mb-4">Llena este formulario para enviar tu solicitud de ingreso. El responsable la revisará pronto.</p>
 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Enviar Postulación
-                </button>
-            </form>
-        @endif
+                    <form action="{{ route('clubes.postular', $club->id_club) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-dark small">Motivo de postulación:</label>
+                            <textarea name="motivo_postulacion" rows="2" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-dark small">Experiencia previa (opcional):</label>
+                            <textarea name="experiencia_previa" rows="2" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark small">Disponibilidad horaria:</label>
+                            <input type="text" name="disponibilidad_horaria" class="form-control" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary fw-bold w-100">
+                            Enviar Postulación
+                        </button>
+                    </form>
+                @endif
+            </div>
+        </div>
     </div>
-
 </div>
 @endsection
