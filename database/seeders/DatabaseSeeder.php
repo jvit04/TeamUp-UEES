@@ -169,6 +169,60 @@ class DatabaseSeeder extends Seeder
         ]);
 
         /*
+|--------------------------------------------------------------------------
+| Eventos académicos
+|--------------------------------------------------------------------------
+*/
+
+    DB::table('eventos_academicos')->insert([
+        [
+            'id_publicacion' => $pubEvento1,
+            'nombre_evento' => 'Conferencia: Ciberseguridad en Entornos Universitarios',
+            'descripcion_evento' => 'Charla informativa sobre protección de datos, contraseñas seguras, ingeniería social y buenas prácticas digitales.',
+            'fecha_evento' => Carbon::today()->addDays(5)->toDateString(),
+            'hora_inicio' => '10:00:00',
+            'hora_fin' => '12:00:00',
+            'lugar' => 'Auditorio Principal UEES',
+            'expositor' => 'Ing. Daniela Andrade',
+            'organizador' => 'Facultad de Ingeniería',
+            'modalidad' => 'PRESENCIAL',
+            'estado_evento' => 'PROGRAMADO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'id_publicacion' => $pubEvento2,
+            'nombre_evento' => 'Taller: Diseño UX para Aplicaciones Web',
+            'descripcion_evento' => 'Taller práctico sobre experiencia de usuario, prototipado, arquitectura de información y diseño de interfaces.',
+            'fecha_evento' => Carbon::today()->addDays(8)->toDateString(),
+            'hora_inicio' => '14:00:00',
+            'hora_fin' => '17:00:00',
+            'lugar' => 'Laboratorio de Computación 1',
+            'expositor' => 'Mgs. Carlos Zambrano',
+            'organizador' => 'Escuela de Computación',
+            'modalidad' => 'PRESENCIAL',
+            'estado_evento' => 'PROGRAMADO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+        [
+            'id_publicacion' => $pubEvento3,
+            'nombre_evento' => 'Seminario: Inteligencia Artificial Aplicada',
+            'descripcion_evento' => 'Seminario académico sobre casos de uso de IA en educación, salud, empresas y proyectos universitarios.',
+            'fecha_evento' => Carbon::today()->addDays(12)->toDateString(),
+            'hora_inicio' => '09:00:00',
+            'hora_fin' => '11:30:00',
+            'lugar' => 'Sala de Conferencias UEES',
+            'expositor' => 'Dra. Mariana Torres',
+            'organizador' => 'Departamento de Innovación Académica',
+            'modalidad' => 'HIBRIDA',
+            'estado_evento' => 'PROGRAMADO',
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],
+    ]);
+
+        /*
         |--------------------------------------------------------------------------
         | Concursos
         |--------------------------------------------------------------------------
