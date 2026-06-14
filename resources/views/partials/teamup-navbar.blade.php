@@ -56,6 +56,21 @@
                         Clubes
                     </a>
                 </li>
+
+ 
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('mis_grupos.index') ? 'active fw-bold' : '' }}" href="{{ route('mis_grupos.index') }}">
+                        Mis Grupos
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('mis_clubes.index') ? 'active fw-bold' : '' }}" href="{{ route('mis_clubes.index') }}">
+                        Mis Clubes
+                    </a>
+                </li>
+                @endauth
             </ul>
         </div>
     </div>
