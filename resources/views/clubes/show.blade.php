@@ -71,9 +71,17 @@
                         </button>
                     </form>
                 @elseif(isset($postulacionPendiente) && $postulacionPendiente)
-                    <div class="alert alert-warning text-center fw-bold text-dark m-0" role="alert">
+                    <h5 class="fw-bold mb-3 text-center">Estado de Solicitud</h5>
+                    <div class="alert alert-warning text-center fw-bold text-dark mb-4" role="alert">
                         Tu solicitud ha sido enviada y está en revisión.
                     </div>
+                    <form action="{{ route('clubes.cancelar_postulacion', $club->id_club) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas cancelar tu solicitud a este club?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger fw-bold w-100">
+                            Cancelar Solicitud
+                        </button>
+                    </form>
                 @elseif($club->cupos_disponibles <= 0)
                     <div class="alert alert-danger text-center fw-bold m-0" role="alert">
                         Este club ya no tiene cupos disponibles.

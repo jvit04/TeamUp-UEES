@@ -57,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
     // Rutas para salir o expulsar de un club
     Route::delete('/clubes/{id}/abandonar', [ClubController::class, 'abandonarClub'])->name('clubes.abandonar');
     Route::delete('/clubes/{idClub}/expulsar/{idUsuario}', [ClubController::class, 'expulsarMiembro'])->name('clubes.expulsar');
+    // Rutas para cancelar postulaciones pendientes
+    Route::delete('/grupos/{id}/cancelar-postulacion', [App\Http\Controllers\ConcursoController::class, 'cancelarPostulacion'])->name('grupos.cancelar_postulacion');
+    Route::delete('/clubes/{id}/cancelar-postulacion', [App\Http\Controllers\ClubController::class, 'cancelarPostulacion'])->name('clubes.cancelar_postulacion');
 
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -189,4 +189,15 @@ public function show($id)
 
         return redirect()->back()->with('success', 'El integrante ha sido expulsado y se ha liberado un cupo.');
     }
+    // Permite a un estudiante retirar su solicitud al club antes de ser aceptado
+    public function cancelarPostulacion($id)
+    {
+        \Illuminate\Support\Facades\DB::table('postulaciones_club')
+            ->where('id_club', $id)
+            ->where('id_usuario', auth()->user()->id_usuario)
+            ->where('estado_postulacion', 'PENDIENTE')
+            ->delete();
+
+        return redirect()->back()->with('success', 'Has cancelado tu solicitud al club correctamente.');
+    }
 }

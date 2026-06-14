@@ -100,8 +100,17 @@
                         @if(auth()->user()->id_usuario == $grupo->id_lider)
                             <span class="badge bg-secondary p-2 fs-6">Eres el líder</span>
                         @elseif($usuarioTieneGrupo)
-                            @elseif($yaPostulo)
-                            <span class="badge bg-warning text-dark p-2 fs-6">Solicitud Enviada</span>
+                           @elseif($yaPostulo)
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-warning text-dark p-2 fs-6">Solicitud Enviada</span>
+                                <form action="{{ route('grupos.cancelar_postulacion', $grupo->id_grupo) }}" method="POST" class="m-0" onsubmit="return confirm('¿Seguro que deseas cancelar tu solicitud a este equipo?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-sm fw-bold">
+                                        Cancelar
+                                    </button>
+                                </form>
+                            </div>
                         @elseif($grupoLleno)
                             <span class="badge bg-danger p-2 fs-6">Grupo Lleno ({{ $miembrosActuales }}/{{ $grupo->cupo_maximo }})</span>
                         @else
