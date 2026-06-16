@@ -94,8 +94,22 @@ public function postularGrupo(Request $request, $id)
     }
 
     // 2. Guardar el nuevo grupo
-    public function guardarGrupo(Request $request, $id)
+public function guardarGrupo(Request $request, $id)
     {
+        $existeNombre = \App\Models\GrupoConcurso::where('id_concurso', $id)
+                                                 ->where('nombre_grupo', $request->nombre_grupo)
+                                                 ->exists();
+
+        if ($existeNombre) {
+            return redirect()->back()
+                ->withErrors(['nombre_grupo' => 'Ya existe un equipo con el nombre "' . $request->nombre_grupo . '". Por favor, elige uno distinto.'])
+                ->withInput(); 
+        }
+        // ------------------------------------------------------------------------
+
+        $grupo = new GrupoConcurso();
+        // ------------------------------------------------------------------------
+
         $grupo = new GrupoConcurso();
         $grupo->id_concurso = $id;
         $grupo->id_lider = auth()->user()->id_usuario;
