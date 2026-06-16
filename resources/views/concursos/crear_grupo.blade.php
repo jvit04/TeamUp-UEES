@@ -18,17 +18,22 @@
             
             <div class="mb-3">
                 <label class="form-label fw-bold text-dark">Nombre del Grupo</label>
-                <input type="text" name="nombre_grupo" class="form-control" required>
+                <input type="text" name="nombre_grupo" class="form-control @error('nombre_grupo') is-invalid @enderror" value="{{ old('nombre_grupo') }}" required>
+                @error('nombre_grupo')
+                    <div class="invalid-feedback fw-bold">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold text-dark">Descripción / ¿Qué perfiles buscas?</label>
-                <textarea name="descripcion_grupo" rows="3" placeholder="Ej: Buscamos un integrante adicional que sepa programar o diseñar..." class="form-control" required></textarea>
+                <textarea name="descripcion_grupo" rows="3" placeholder="Ej: Buscamos un integrante adicional que sepa programar o diseñar..." class="form-control" required>{{ old('descripcion_grupo') }}</textarea>
             </div>
 
             <div class="mb-4">
                 <label class="form-label fw-bold text-dark">Cupo Máximo (Total de integrantes)</label>
-                <input type="number" name="cupo_maximo" min="{{ $concurso->minimo_integrantes }}" max="{{ $concurso->maximo_integrantes }}" value="{{ $concurso->minimo_integrantes }}" class="form-control" required>
+                <input type="number" name="cupo_maximo" min="{{ $concurso->minimo_integrantes }}" max="{{ $concurso->maximo_integrantes }}" value="{{ old('cupo_maximo', $concurso->minimo_integrantes) }}" class="form-control" required>
                 <div class="form-text text-muted">Este concurso permite entre {{ $concurso->minimo_integrantes }} y {{ $concurso->maximo_integrantes }} personas.</div>
             </div>
 

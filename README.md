@@ -79,8 +79,8 @@ php artisan serve
 ## Métricas de Progreso
 | Indicador | Valor |
 | --------- | ----- |
-| Commits totales | 48 |
-| Issues/PRs fusionados | 0/2 |
+| Commits totales | 49 |
+| Issues/PRs fusionados | 0/3 |
 | Cobertura de pruebas | 80% |
 | Última actualización | 2026-06-13 |
 
