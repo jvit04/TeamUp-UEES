@@ -53,27 +53,27 @@ El sistema se divide en cuatro módulos funcionales principales orientados al ec
 `PHP 8.5` `Laravel 13` `MySQL` `Bootstrap 5` `CSV Flat Files`
 
 ## Ejecución
-# Instrucciones paso a paso
+### Instrucciones paso a paso
 git clone https://github.com/jvit04/TeamUp-UEES.git
 cd TeamUp-UEES
 
-# Instalar dependencias de desarrollo y producción
+### Instalar dependencias de desarrollo y producción
 composer install
 
-# Configurar variables de entorno locales
+### Configurar variables de entorno locales
 cp .env.example .env
-# Nota: Configure sus credenciales DB_DATABASE, DB_USERNAME y DB_PASSWORD dentro del archivo .env generado.
+#### Nota: Configure sus credenciales DB_DATABASE, DB_USERNAME y DB_PASSWORD dentro del archivo .env generado.
 
-# Generar clave única de cifrado de la aplicación
+### Generar clave única de cifrado de la aplicación
 php artisan key:generate
 
-# Ejecutar migraciones estructurales y poblar base de datos con Súper Seeder
+### Ejecutar migraciones estructurales y poblar base de datos con Súper Seeder
 php artisan migrate:fresh --seed
 
-# Optimizar y limpiar la caché del sistema
+### Optimizar y limpiar la caché del sistema
 php artisan optimize:clear
 
-# Levantar el servidor local
+### Levantar el servidor local
 php artisan serve
 
 ## Métricas de Progreso
